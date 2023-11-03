@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .drop-menu {
+    @apply group-[.show]:max-h-screen group-[.show]:py-2 max-h-0 overflow-hidden w-max grid top-[110%] right-0 rounded-md absolute bg-slate-50 text-slate-950 duration-200 ease-in-out;
+  }
+  .drop-link {
+    @apply px-6 hover:bg-slate-200 ease-in-out duration-75;
+  }
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
