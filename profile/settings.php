@@ -58,7 +58,7 @@ if (!isset($_SESSION['user_id'])) {
             } elseif ($row['acctype'] == 'company') {
                 $updateCompanySql = "UPDATE company SET companyname = ?, description = ?, address = ?, about = ? WHERE user_id = ?";
                 $stmt = mysqli_prepare($conn, $updateCompanySql);
-                mysqli_stmt_bind_param($stmt, "sssss", $newUsername, $newBio, $newExperience, $newAbout, $userId);
+                mysqli_stmt_bind_param($stmt, "sssss", $newUsername, $newBio, $newAddress, $newAbout, $userId);
             }
 
             if (mysqli_stmt_execute($stmt)) {
@@ -173,6 +173,7 @@ if (!isset($_SESSION['user_id'])) {
                                 
                                 <div class="w-1/2 ml-6">
                                     <div class="p-3 bg-slate-100 rounded-md">
+                                        <?php if ($row['acctype'] == 'user') { ?>
                                         <h1 class="text-base font-semibold rounded-md mb-2">Skills</h1>
                                         <div class="flex gap-2 flex-wrap mx-auto mb-4">
                                         <?php 
@@ -192,6 +193,7 @@ if (!isset($_SESSION['user_id'])) {
                                                 <a href="skills.php" class="text-sm">Atur Skill</a>
                                             </span>
                                         </div>
+                                        <?php } ?>
 
                                         <label for="address" class="text-base font-semibold rounded-md mb-2 ">Alamat</label> </br>
                                         <input class="mt-2 mb-4 rounded-md w-full" type="text" id="address" name="address" value="<?php echo $profile['address']; ?>"> </br>

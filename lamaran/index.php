@@ -185,7 +185,7 @@
                     <div class="flex px-4">
                 <div class="col-start-1 col-end-4 sm:col-span-9 mt-16 w-full">
                     <div class="flex">
-                    <h1 class="font-semibold text-2xl mb-5 mr-2">Lamaran Diterima</h1>
+                    <h1 class="font-semibold text-2xl mb-5 mr-2">Lamaran Ditolak</h1>
                     <!-- <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

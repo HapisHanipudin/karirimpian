@@ -72,7 +72,7 @@ $activeTabs = 'profile';
                                         </div>
                                     </div>
                                     <div class="flex flex-row-reverse grow ">
-                                        <?php if ($profile['user_id'] != $_SESSION['user_id']) { ?>
+                                        <?php if ($profile['user_id'] != $userId) { ?>
                                             <a href="../chat/?<?php echo $id; ?>" class="group w-32 h-10 flex items-center justify-center bg-gray-800 text-white relative cursor-pointer rounded-md border-none">
                                                 <svg class="mr-2 animation-none group-hover:animate-bounce " width="25px" height="25px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg"
                                                 stroke="#ffffff" transform="rotate(0)">
@@ -120,8 +120,8 @@ $activeTabs = 'profile';
                                         <p><?php echo $profile['experience']; ?></p>
                                     </div>
                                 <?php } ?>
-                                    <div class="mt-2 p-3 bg-slate-100 rounded-md">
-                                        <h1 class="font-bold text-base rounded-md">Tentang Saya</h1>
+                                    <div class="<?php echo (($row['acctype'] == 'user') ? 'mt-2' : '') ?> p-3 bg-slate-100 rounded-md">
+                                        <h1 class="font-bold text-base rounded-md">Tentang</h1>
                                         <p class="mb-3">
                                             <?php echo $profile['about']; ?>
                                         </p>
@@ -130,9 +130,10 @@ $activeTabs = 'profile';
                                 
                                 
                                 <div class="w-1/2 ml-6">
-                                    <div class="p-3 bg-slate-100 rounded-md">
+                                    <div class="p-3 bg-slate-100 rounded-md flex flex-col gap-4">
                                         <?php if ($row['acctype'] == 'user') { ?>
-                                        <h1 class="text-base font-semibold rounded-md mb-2">Skill</h1>
+                                        <div>
+                                        <h1 class="text-base font-semibold rounded-md ">Skill</h1>
                                         <div class="flex gap-2 flex-wrap mx-auto">
                                         <?php 
                                             $skillSql = "SELECT * FROM skill WHERE user_id = '$id'";
@@ -148,8 +149,9 @@ $activeTabs = 'profile';
                                             </span>
                                             <?php } ?>
                                         </div>
-                                        <?php } else { ?>
-                                        <h1 class="text-base font-semibold rounded-md mb-2">Tags</h1>
+                                        </div>
+                                        <?php } //else { ?>
+                                        <!-- <h1 class="text-base font-semibold rounded-md ">Tags</h1>
                                         <div class="flex gap-2 flex-wrap mx-auto">
                                             <a href="" class="border-2 hover:scale-105 ease-in-out duration-75 border-gray-800 rounded-full text-center px-2 justify-center w-max">
                                                 <button class="text-sm">#Wanitakarir</button>
@@ -163,26 +165,28 @@ $activeTabs = 'profile';
                                             <a href="" class="border-2 hover:scale-105 ease-in-out duration-75 border-gray-800 rounded-full text-center px-2 justify-center w-max">
                                                 <button class="text-sm">#PekerjaKeras</button>
                                             </a>
-                                        </div>
-                                        <?php } ?>
-
-                                        <h1 class="text-base font-semibold rounded-md mb-2 mt-4">Alamat</h1>
-                                        <p class="flex">
-                                            <!-- <svg width="30px" height="30px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione mr-2"
-                                            preserveAspectRatio="xMidYMid meet" fill="#ffffff" stroke="#ffffff">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                            <g id="SVGRepo_iconCarrier">
-                                                <path d="M31.8 62c16.6 0 30-13.4 30-30h-60c0 16.6 13.4 30 30 30" fill="#f9f9f9"></path>
-                                                <path d="M31.8 2c-16.6 0-30 13.4-30 30h60c0-16.6-13.4-30-30-30" fill="#ed4c5c"></path>
-                                            </g>
-                                        </svg> -->
+                                        </div> -->
+                                        <?php //} ?>
+                                        <div>
+                                            <h1 class="text-base font-semibold rounded-md ">Alamat</h1>
+                                            <p class="flex">
+                                                <!-- <svg width="30px" height="30px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione mr-2"
+                                                preserveAspectRatio="xMidYMid meet" fill="#ffffff" stroke="#ffffff">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path d="M31.8 62c16.6 0 30-13.4 30-30h-60c0 16.6 13.4 30 30 30" fill="#f9f9f9"></path>
+                                                    <path d="M31.8 2c-16.6 0-30 13.4-30 30h60c0-16.6-13.4-30-30-30" fill="#ed4c5c"></path>
+                                                </g>
+                                            </svg> -->
                                         <?php echo $profile['address']; ?>
                                         </p>
+                                        </div>
 
                                 <?php if ($row['acctype'] == 'user') { ?>
-                                        <h1 class="text-base font-semibold rounded-md mb-2 mt-4">Instagram</h1>
+                                        <div>
+                                        <h1 class="text-base font-semibold rounded-md ">Instagram</h1>
                                         <p class="flex">
                                             <a href="https://www.instagram.com/<?php echo $profile['instagram']; ?>/" class="flex group"><?php echo $profile['instagram']; ?>
                                                 <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" class="ml-1 animate-none group-hover:animate-bounce delay-0 hover:delay-300" xmlns="http://www.w3.org/2000/svg">
@@ -195,8 +199,10 @@ $activeTabs = 'profile';
                                                 </svg>
                                             </a>
                                         </p>
+                                        </div>
                                 <?php } ?>
-                                        <h1 class="text-base font-semibold rounded-md mb-2 mt-4">Email</h1>
+                                        <div>
+                                        <h1 class="text-base font-semibold rounded-md ">Email</h1>
                                         <p class="flex">
                                             <a href="mailto:<?php echo $profile['email']; ?>" class="group flex"><?php echo $profile['email']; ?>
                                             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
@@ -210,10 +216,43 @@ $activeTabs = 'profile';
                                         </svg>
                                             </a>
                                         </p>
+                                        </div>
                                     </div>
                                 </div>
+                                
                             </div>
+                            <?php if ($row['acctype'] == 'company') { ?>
+                            <div class="bg-slate-100 flex flex-col  mt-2 rounded-md">
+                                <h2 class="text-base font-semibold rounded-md mb-2 pt-4 pl-4">Pekerja</h2>
+                                <!-- <hr> -->
+                                <div class="flex flex-col justify-center h-36 overflow-scroll pt-4">
 
+                                    <?php 
+                                $workerSQL = "SELECT w.*, u.* FROM worker w JOIN users u ON w.user_id = u.user_id WHERE company_id = '$id'";
+                                $workerResult = mysqli_query($conn, $workerSQL);
+                                
+                                if (mysqli_num_rows($workerResult) > 0) {
+                                    while ($worker = mysqli_fetch_assoc($workerResult)) {  ?>
+                                    <hr>
+                                    <div class="rounded-md flex w-full  p-4 items-center gap-3">
+                                        <div class="">
+                                            <img src="../src/uploads/profile/<?php echo $worker['profile_img']; ?>" class="w-14 h-14 object-top object-cover rounded-full">
+                                        </div>
+                                        
+                                        <div class="">
+                                            <a href="../profile/?id=<?php echo $worker['user_id']; ?>" class="font-semibold text-base"><?php echo $worker['username']; ?></a>
+                                            <p class="text-gray-600 text-sm"><?php echo $worker['work_name']; ?></p>
+                                        </div>
+                                        <div class="flex flex-grow flex-row-reverse">
+                                            <a href="../profile/?id=<?php echo $worker['user_id']; ?>" class=" text-white bg-slate-800 py-1 px-3 rounded-md">Visit Profile</a>
+                                        </div>
+                    </div>
+                    <?php } } else {  ?>
+                        <h1 class="text-slate-500 self-center">Belum Memiliki Pekerja</h1>
+                        <?php }?>
+                    </div>
+                            </div>
+                            <?php }  ?>
                         </div>
                     </section>
 
