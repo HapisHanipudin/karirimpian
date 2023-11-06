@@ -17,4 +17,6 @@ if (isset($_SESSION['user_id'])) {
     $userEcho = '';
 }
 
+$_SESSION['last_visited_page'] = $_SERVER['REQUEST_URI'];
+
 ?>

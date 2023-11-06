@@ -1,14 +1,3 @@
-<?php if(!empty($error)) { ?>
-    <div class="bg-slate-50 flex fixed right-3 top-3 p-7 rounded-md -translate-y-[125%] animate-notif">
-      <h3 class="text-xl"><?php echo $error; ?></h3>
-    </div>
-<?php $_SESSION['notif'] = ''; }
-else {
-  $_SESSION['notif'] = '';
-}
-?>
-
-
 
 <nav class="fixed w-full top-0 z-[999] flex py-3 bg-gray-800 px-5 justify-between items-center text-slate-50">
             <div class="logo">
@@ -117,9 +106,86 @@ else {
                     <!---->
                 
                 </ul>
-            <div class="menu flex items-center gap-2">
-                <!-- <span class="capitalize">Account</span> -->
-                <?php if(isset($_SESSION["username"])) { 
+                <div class="menu flex items-center gap-2">
+                  
+                  <!-- <span class="capitalize">Account</span> -->
+                  <?php if(isset($_SESSION["username"])) { ?>  
+                          
+        <div class="relative">
+          <?php 
+              $sql_unread = "SELECT n.*, a.* 
+              FROM notif AS n  
+              INNER JOIN account AS a ON n.sender = a.user_id 
+              WHERE tujuan = '$userId'
+              AND status = 'unread'
+              ";
+                $result_unread = mysqli_query($conn, $sql_unread);
+                ?>
+          <button
+            id="notificationButton"
+            class="flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-200 active:bg-indigo-800"
+          >
+            <i class="fas fa-bell"></i>
+            <span><?php echo mysqli_num_rows($result_unread); ?></span>
+          </button>
+
+          <div id="notificationDropdown" class="hidden flex flex-col items-center cursor-pointer origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+            <div class="py-2 " role="menu" aria-orientation="vertical" aria-labelledby="notificationButton">
+              <h1 class="px-4 text-base font-semibold mb-5 text-gray-800">Notification</h1>
+              <?php 
+              $sql_notif = "SELECT n.*, a.* 
+              FROM notif AS n  
+              INNER JOIN account AS a ON n.sender = a.user_id 
+              WHERE tujuan = '$userId'";
+                $result_notif = mysqli_query($conn, $sql_notif);
+                if (mysqli_num_rows($result_notif) > 0) {
+                while ($notif = mysqli_fetch_assoc($result_notif)) {
+                  $sender = $notif["sender"];
+                  if ($notif["acctype"] == "user") {
+                    $getProfile = "SELECT * FROM users WHERE user_id = '$sender'";
+                  } else {
+                    $getProfile = "SELECT * FROM company WHERE user_id = '$sender'";
+                  }
+                  $getProfileResult = mysqli_query($conn, $getProfile);
+                  $profile = mysqli_fetch_assoc($getProfileResult);
+               ?>
+              <div class="notification-item py-2 px-4 <?php echo (($notif['status'] == 'unread') ? 'bg-slate-200' : '')  ?>">
+                <img src="../src/uploads/profile/<?php echo $profile['profile_img']; ?>" alt="Notification Image" class="notification-image" />
+                <div>
+                  <a href="../profile/?id=<?php echo $notif['sender']; ?>" class="text-base font-semibold mb-2 text-gray-800"><?php echo $notif['username']; ?></a>
+                  <p class="text-sm text-gray-500"><?php echo $notif['message']; ?></p>
+                </div>
+              </div>
+              <?php } } else { ?>
+                <div class="flex w-full h-full justify-center items-center">
+                    <p class="text-sm text-gray-500">Tidak ada notifikasi</p>
+                </div>
+                <?php } ?>
+              </div>
+              <div class="flex w-full h-full justify-center items-center">
+                <a href="../notif/read.php" class="flex w-1/2 hover:bg-slate-200 h-10 rounded-bl-lg roundedd justify-center items-center text-black">Tandai Dibaca</a>
+                <a href="../notif/unread.php" class="flex w-1/2 hover:bg-slate-200 h-10 rounded-br-lg justify-center items-center text-black">Tandai Belum Dibaca</a>
+              </div>
+          </div>
+        </div>
+
+    <script>
+      const notificationButton = document.getElementById("notificationButton");
+      const notificationDropdown = document.getElementById("notificationDropdown");
+
+      notificationButton.addEventListener("click", () => {
+        notificationDropdown.classList.toggle("hidden");
+      });
+
+      document.addEventListener("click", (event) => {
+        const targetElement = event.target;
+        if (!targetElement.closest("#notificationDropdown") && !targetElement.closest("#notificationButton")) {
+          notificationDropdown.classList.add("hidden");
+        }
+      });
+    </script>
+
+                  <?php 
                   $sql_account = "SELECT * FROM account WHERE user_id = '$userId'";
                   $result_account = mysqli_query($conn, $sql_account);
                   $account = mysqli_fetch_assoc($result_account);
@@ -131,7 +197,7 @@ else {
                   }
                   $profileResult = mysqli_query($conn, $profileSql);
                   $profile = mysqli_fetch_assoc($profileResult);
-                  ?>  
+                  ?>
                 <button class="drop-btn group relative base py-1 px-3 rounded-full border border-slate-50 text-slate-50 capitalize">
                     <?php echo $account['username'] ?>
                     <!-- <div

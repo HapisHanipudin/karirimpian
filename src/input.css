@@ -9,6 +9,12 @@
   .drop-link {
     @apply px-6 hover:bg-slate-200 ease-in-out duration-75;
   }
+  .notification-item {
+    @apply flex items-center;
+  }
+  .notification-image {
+    @apply w-[40px] h-[40px] object-cover rounded-lg mr-[20px];
+  }
 }
 
 body {

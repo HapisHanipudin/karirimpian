@@ -17,9 +17,14 @@ if (isset($_GET['id'])) {
     $workSql = "INSERT INTO worker (works_id, user_id, company_id, work_name) VALUES ('$workId', '$workUser', '$workCompany', '$workName')";
     $workResult = mysqli_query($conn, $workSql);
 
+    $notifId = uniqid();
+    $notif = "Your application for $workName has been accepted by $username.";
+    $notifSql = "INSERT INTO notif (notif_id, sender, tujuan, message) VALUES ('$notifId', '$userId', '$workUser', '$notif')";
+    $notifResult = mysqli_query($conn, $notifSql);
+
     $sql = "UPDATE lamaran SET status = 'accepted' WHERE lamaran_id = '$id'";
     $result = mysqli_query($conn, $sql);
-    if ($result) {
+    if ($result && $workResult && $notifResult) {
         header('location: ../pekerjaan/');
         exit;
     } else {

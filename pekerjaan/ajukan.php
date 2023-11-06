@@ -42,12 +42,14 @@ if (isset($_GET['id'])) {
         $jobRow = mysqli_fetch_assoc($jobResult);
             $id = uniqid();
             $lokerId = $jobRow['id'];
+            $lokerName = $jobRow['name'];
             $lokerCompany = $jobRow['company'];
+            $message = "Mengajukan lamaran pekerjaan $lokerName";
 
             $sql = "INSERT into lamaran (lamaran_id, job_id, user_id, status, company) VALUES ('$id', '$lokerId', '$userId', 'pending', '$lokerCompany')";
             $result = mysqli_query($conn, $sql);
 
-            $notifSql = "INSERT into notif (notif_id, company, user, job_id, status, type, tujuan) VALUES ('$id', '$lokerCompany', '$userId', '$lokerId', 'unread', 'pending', '$lokerCompany')";
+            $notifSql = "INSERT into notif (notif_id, sender, message, status, tujuan) VALUES ('$id', '$userId', '$message', 'unread', '$lokerCompany')";
             $notifResult = mysqli_query($conn, $notifSql);
             
         // Anda dapat menampilkan data pekerjaan dan formulir lamaran di sini
