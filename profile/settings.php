@@ -65,11 +65,13 @@ if (!isset($_SESSION['user_id'])) {
                 // Handle profile image upload
                 if (isset($_FILES['profile_img']) && $_FILES['profile_img']['error'] === UPLOAD_ERR_OK) {
                     $targetDir = "../src/uploads/profile/";
-                    $targetFile = $targetDir . $_SESSION['user_id'];
+                    $targetFile = $targetDir . $_SESSION['user_id'].$_FILES['profile_img']['name'];
+                    $fileName = $_SESSION['user_id'].$_FILES['profile_img']['name'];
+                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
 
                     if (move_uploaded_file($_FILES["profile_img"]["tmp_name"], $targetFile)) {
                         // File successfully uploaded, you can save the file name in the database
-                        $profileImgName = $_SESSION['user_id'];
+                        $profileImgName = $_SESSION['user_id'].$_FILES['profile_img']['name'];
 
                         if ($row['acctype'] == 'user') {
                             $updateImageSql = "UPDATE users SET profile_img = ? WHERE user_id = ?";
