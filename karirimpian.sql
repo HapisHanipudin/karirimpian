@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 05, 2023 at 03:36 AM
+-- Generation Time: Feb 28, 2024 at 01:45 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -49,7 +49,8 @@ INSERT INTO `account` (`user_id`, `username`, `email`, `password`, `acctype`, `c
 ('USR652d3be01043b', 'gtau', 'gtau@gmail.com', '$2y$10$7yejSPS0LRiGeOpb150Wv.PA43BAzLWhL7h.yPMvd/3UGMrFm1OLK', 'user', '2023-10-16 13:34:24'),
 ('USR65337ccc2d304', 'anjay', 'anjay@gmail.com', '$2y$10$G6XfqSmlIkJF2EOi/Js0weckhFYFLxQb58Lkm.cWAgC8eAOsayEby', 'user', '2023-10-21 07:25:00'),
 ('USR65339b793d151', 'gery', 'gery@gmail.com', '$2y$10$LbUQ/9WquTCrdhNOQa3dP.O15jpQ8M4JKkgi2NzdLCqswo3OtFx0a', 'user', '2023-10-21 09:35:53'),
-('USR65410ad241eac', 'nipudin', 'nipudin@gmail.com', '$2y$10$w6fHaHSWrUCtAy6INMJWCuTOTVcq6oDyjET6od/7hOwgqi1JZIHTC', 'user', '2023-10-31 14:10:26');
+('USR65410ad241eac', 'nipudin', 'nipudin@gmail.com', '$2y$10$w6fHaHSWrUCtAy6INMJWCuTOTVcq6oDyjET6od/7hOwgqi1JZIHTC', 'user', '2023-10-31 14:10:26'),
+('USR6547a32c42803', 'au', 'au@gmail.com', '$2y$10$JgfNuivA8Sk3UP6KNWNGU.Ad1mQYe80ZzXqplELYoJ5MoujQnhyQ.', 'user', '2023-11-05 14:14:04');
 
 -- --------------------------------------------------------
 
@@ -99,9 +100,14 @@ CREATE TABLE `lamaran` (
 INSERT INTO `lamaran` (`lamaran_id`, `job_id`, `user_id`, `status`, `company`, `time`) VALUES
 ('65367f637d847', '653343fa38bb3', 'USR65339b793d151', 'pending', 'CMP653342d27089e', '2023-10-23 14:12:51.514159'),
 ('6541046f54109', '652d405b11a69', 'USR65339b793d151', 'accepted', 'CMP652d0a2ee5138', '2023-10-31 13:43:11.344370'),
-('65410473513ad', '652e5c45769bf', 'USR65339b793d151', 'declined', 'CMP652d0a2ee5138', '2023-10-31 13:43:15.332764'),
+('65410473513ad', '652e5c45769bf', 'USR65339b793d151', 'accepted', 'CMP652d0a2ee5138', '2023-10-31 13:43:15.332764'),
 ('6541f8e008e80', '6541f7183dd92', 'USR65410ad241eac', 'accepted', 'CMP652d0943eb0c5', '2023-11-01 07:06:08.036508'),
-('6545cced84569', '652d405b11a69', 'USR65410ad241eac', 'accepted', 'CMP652d0a2ee5138', '2023-11-04 04:47:41.542081');
+('6545cced84569', '652d405b11a69', 'USR65410ad241eac', 'accepted', 'CMP652d0a2ee5138', '2023-11-04 04:47:41.542081'),
+('6547a3d07742c', '6541f7183dd92', 'USR6547a32c42803', 'pending', 'CMP652d0943eb0c5', '2023-11-05 14:16:48.488533'),
+('654889c7cec78', '6541f7d05ec0d', 'USR6547a32c42803', 'pending', 'CMP652d0943eb0c5', '2023-11-06 06:37:59.847255'),
+('654889cc8e177', '652d405b11a69', 'USR6547a32c42803', 'accepted', 'CMP652d0a2ee5138', '2023-11-06 06:38:04.582032'),
+('654889cfc79a0', '652e5c45769bf', 'USR6547a32c42803', 'declined', 'CMP652d0a2ee5138', '2023-11-06 06:38:07.817591'),
+('654889d4b1875', '653343fa38bb3', 'USR6547a32c42803', 'pending', 'CMP653342d27089e', '2023-11-06 06:38:12.727187');
 
 -- --------------------------------------------------------
 
@@ -137,11 +143,9 @@ INSERT INTO `loker` (`id`, `company`, `name`, `short_desc`, `detail`, `created_a
 
 CREATE TABLE `notif` (
   `notif_id` varchar(32) NOT NULL,
-  `company` varchar(32) NOT NULL,
-  `user` varchar(32) NOT NULL,
-  `job_id` varchar(32) NOT NULL,
-  `status` enum('read','unread') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `type` enum('pending','accepted','declined','') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `sender` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `message` varchar(4000) NOT NULL,
+  `status` enum('read','unread') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unread',
   `tujuan` varchar(32) NOT NULL,
   `time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -150,25 +154,15 @@ CREATE TABLE `notif` (
 -- Dumping data for table `notif`
 --
 
-INSERT INTO `notif` (`notif_id`, `company`, `user`, `job_id`, `status`, `type`, `tujuan`, `time`) VALUES
-('653523cd707b7', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-22 13:58:50.310878'),
-('65367ceb5eea0', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:02:19.390209'),
-('65367cf2f3859', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:02:26.998808'),
-('65367d4356076', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:03:47.354248'),
-('65367d4811f40', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:03:52.074715'),
-('65367d7103401', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:04:33.020122'),
-('65367db833fee', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:05:44.219753'),
-('65367dc7e8b65', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:05:59.960317'),
-('65367dd30e4bc', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:06:11.059800'),
-('65367e0e01560', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:07:10.012194'),
-('65367f4ee8050', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:12:30.951665'),
-('65367f5a84ccc', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:12:42.550883'),
-('65367f613fcb7', 'CMP652d0a2ee5138', 'USR65339b793d151', '652e5c45769bf', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-23 14:12:49.262621'),
-('65367f637d847', 'CMP653342d27089e', 'USR65339b793d151', '653343fa38bb3', 'unread', 'pending', 'CMP653342d27089e', '2023-10-23 14:12:51.515607'),
-('6541046f54109', 'CMP652d0a2ee5138', 'USR65339b793d151', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-31 13:43:11.346686'),
-('65410473513ad', 'CMP652d0a2ee5138', 'USR65339b793d151', '652e5c45769bf', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-10-31 13:43:15.339089'),
-('6541f8e008e80', 'CMP652d0943eb0c5', 'USR65410ad241eac', '6541f7183dd92', 'unread', 'pending', 'CMP652d0943eb0c5', '2023-11-01 07:06:08.038109'),
-('6545cced84569', 'CMP652d0a2ee5138', 'USR65410ad241eac', '652d405b11a69', 'unread', 'pending', 'CMP652d0a2ee5138', '2023-11-04 04:47:41.547709');
+INSERT INTO `notif` (`notif_id`, `sender`, `message`, `status`, `tujuan`, `time`) VALUES
+('6547a3d07742c', 'USR6547a32c42803', 'Mengajukan lamaran pekerjaan Jadi Raja IT di SI', 'unread', 'CMP652d0943eb0c5', '2023-11-05 14:16:48.490006'),
+('654889c7cec78', 'USR6547a32c42803', 'Mengajukan lamaran pekerjaan Jadi Raja IT di SI', 'unread', 'CMP652d0943eb0c5', '2023-11-06 06:37:59.848661'),
+('654889cc8e177', 'USR6547a32c42803', 'Mengajukan lamaran pekerjaan Kuli DKF Expert', 'read', 'CMP652d0a2ee5138', '2023-11-06 06:38:04.583111'),
+('654889cfc79a0', 'USR6547a32c42803', 'Mengajukan lamaran pekerjaan DKF Reguler', 'read', 'CMP652d0a2ee5138', '2023-11-06 06:38:07.818585'),
+('654889d4b1875', 'USR6547a32c42803', 'Mengajukan lamaran pekerjaan Tukang Parkir', 'unread', 'CMP653342d27089e', '2023-11-06 06:38:12.728317'),
+('654897927ac18', 'CMP652d0a2ee5138', 'Your application for  has been declined by company.', 'unread', 'USR6547a32c42803', '2023-11-06 07:36:50.503208'),
+('654897f1907b8', 'CMP652d0a2ee5138', 'Your application for DKF Reguler has been accepted by company.', 'read', 'USR65339b793d151', '2023-11-06 07:38:25.591828'),
+('654897f58696d', 'CMP652d0a2ee5138', 'Your application for DKF Reguler has been declined by company.', 'unread', 'USR6547a32c42803', '2023-11-06 07:38:29.551312');
 
 -- --------------------------------------------------------
 
@@ -220,8 +214,9 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `profile_img`, `bio`, `abou
 ('USR652d3b8d403aa', 'user', 'user@gmail.com', 'user.png', 'Bio Not Set', 'Welcome To My Profile', 'Not Set', 'Not Set', 'Not Set'),
 ('USR652d3be01043b', 'gtau', 'gtau@gmail.com', 'user.png', 'Bio Not Set', 'Welcome To My Profile', 'Not Set', 'Not Set', 'Not Set'),
 ('USR65337ccc2d304', 'anjay', 'anjay@gmail.com', 'user.png', 'Bio Not Set', 'Welcome To My Profile', 'Not Set', 'Not Set', 'Not Set'),
-('USR65339b793d151', 'Gery', 'gery@gmail.com', 'USR65339b793d151', 'anjay', 'Saya desainer grafis style texture kertas', 'Jadi ODT DKV di SI', 'bekasi', 'gryzrinhsmn'),
-('USR65410ad241eac', 'nipudin', 'nipudin@gmail.com', 'USR65410ad241eac', 'Hapis Hanipudin', 'Welcome To My Profile', 'jadi orang', 'Cimanggis Indah Depok', 'hapishanipudin');
+('USR65339b793d151', 'Gery', 'gery@gmail.com', 'USR65339b793d151Gambar WhatsApp 2023-10-29 pukul 10.03.27_a6762675.jpg', 'anjay', 'Saya desainer grafis style texture kertas', 'Jadi ODT DKV di SI', 'bekasi', 'gryzrinhsmn'),
+('USR65410ad241eac', 'nipudin', 'nipudin@gmail.com', 'USR65410ad241eac', 'Hapis Hanipudin', 'Welcome To My Profile', 'jadi orang', 'Cimanggis Indah Depok', 'hapishanipudin'),
+('USR6547a32c42803', 'au', 'au@gmail.com', 'user.png', 'Bio Not Set', 'Welcome To My Profile', 'Not Set', 'Not Set', 'Not Set');
 
 -- --------------------------------------------------------
 
@@ -245,7 +240,8 @@ INSERT INTO `worker` (`works_id`, `user_id`, `company_id`, `work_name`) VALUES
 ('653683e48b760', 'USR65339b793d151', 'CMP652d0a2ee5138', 'DKF Reguler'),
 ('654107049ed96', 'USR65339b793d151', 'CMP652d0a2ee5138', 'Kuli DKF Expert'),
 ('6541f8edbcef5', 'USR65410ad241eac', 'CMP652d0943eb0c5', 'Jadi Raja IT di SI'),
-('6545ccfc81b42', 'USR65410ad241eac', 'CMP652d0a2ee5138', 'Kuli DKF Expert');
+('6545ccfc81b42', 'USR65410ad241eac', 'CMP652d0a2ee5138', 'Kuli DKF Expert'),
+('654897f190334', 'USR65339b793d151', 'CMP652d0a2ee5138', 'DKF Reguler');
 
 --
 -- Indexes for dumped tables
@@ -281,8 +277,8 @@ ALTER TABLE `loker`
 --
 ALTER TABLE `notif`
   ADD PRIMARY KEY (`notif_id`),
-  ADD KEY `company` (`company`),
-  ADD KEY `user` (`user`);
+  ADD KEY `company` (`sender`),
+  ADD KEY `tujuan` (`tujuan`);
 
 --
 -- Indexes for table `skill`
@@ -325,8 +321,8 @@ ALTER TABLE `loker`
 -- Constraints for table `notif`
 --
 ALTER TABLE `notif`
-  ADD CONSTRAINT `notif_ibfk_1` FOREIGN KEY (`company`) REFERENCES `company` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `notif_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `notif_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `account` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notif_ibfk_2` FOREIGN KEY (`tujuan`) REFERENCES `account` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `skill`
