@@ -51,8 +51,8 @@ if (isset($_GET['lokersrch']) || isset($_GET['filter'])) {
 
     if (isset($_GET['lokersrch']) && !empty($_GET['lokersrch'])) {
         $search = $_GET['lokersrch'];
-        $sql .= " AND l.name LIKE '%" . $search . "%'";
-    }
+        $sql .= " AND l.name LIKE '%" . $search . "%' OR l.short_desc LIKE '%" . $search . "%' OR l.detail LIKE '%" . $search . "%' OR c.companyname LIKE '%" . $search . "%' "; 
+    }       
     
     if (isset($_GET['filter']) && !empty($_GET['filter'])) {
         $filter = $_GET['filter'];
